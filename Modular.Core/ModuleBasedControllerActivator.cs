@@ -35,7 +35,7 @@ namespace Modular.Core
 
             Type serviceType = context.ActionDescriptor.ControllerTypeInfo.AsType();
 
-            return serviceProvider.GetRequiredService(serviceType);
+            return ActivatorUtilities.CreateInstance(serviceProvider, serviceType);
         }
 
         public void Release(ControllerContext context, object controller)
