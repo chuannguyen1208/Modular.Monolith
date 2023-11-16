@@ -1,4 +1,6 @@
 ﻿using BuildingBlock.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Modular.Core;
@@ -15,13 +17,12 @@ namespace Module.Two
 
     public class ModuleInitializer : IModuleInitializer
     {
-        public void Init(IServiceCollection services)
-        {
-            services.AddSingleton<IService, ModuleTwoService>();
-        }
-
         public void MapEndpoints(IEndpointRouteBuilder endpoints)
         {
+            endpoints
+                .MapGet("/moduleTwo/test", () => "Hello from module two")
+                .WithTags("Module.Two")
+                .WithOpenApi();
         }
     }
 }

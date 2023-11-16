@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Modular.Core\Modular.Core.csproj" />
     <ProjectReference Include="..\modules\Module.One\Module.One.csproj" />
     <ProjectReference Include="..\modules\Module.Two\Module.Two.csproj" />

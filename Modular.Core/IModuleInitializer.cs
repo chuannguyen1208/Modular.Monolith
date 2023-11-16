@@ -5,7 +5,6 @@ namespace Modular.Core
 {
     public interface IModuleInitializer
     {
-        void Init(IServiceCollection services);
         void MapEndpoints(IEndpointRouteBuilder endpoints);
     }
 }

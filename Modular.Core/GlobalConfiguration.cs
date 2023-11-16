@@ -9,12 +9,6 @@ namespace Modular.Core
 {
     public static class GlobalConfiguration
     {
-        static GlobalConfiguration()
-        {
-            ModuleInitializers = new Dictionary<IModuleInitializer, IServiceCollection> ();
-        }
-
-        public static IServiceCollection ServicesRoot { get; set; } = null!;
-        public static Dictionary<IModuleInitializer, IServiceCollection> ModuleInitializers { get; set; }
+        public static List<IModuleInitializer> Initializers { get; set; } = new List<IModuleInitializer>();
     }
 }

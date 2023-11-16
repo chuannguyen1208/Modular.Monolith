@@ -1,45 +1,36 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using BuildingBlock.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Modular.Core;
-using Module.One.Controllers;
+using Module.One;
+using Module.Two;
 using System.Reflection;
 using System.Runtime.Loader;
-using WebHost.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
 
-LoadInstalledModules(builder);
+LoadInstalledModules(builder, out List<Assembly> assemblies);
 
+builder.Host
+    .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        builder.RegisterModule<ModuleOneModule>();
+        builder.RegisterModule<ModuleTwoModule>();
+    });
 
-var moduleInitializerInterface = typeof(IModuleInitializer);
-
-List<Assembly> loadedModuleAssemblies = new();
-
-foreach (var (moduleInitializer, moduleServiceCollection) in GlobalConfiguration.ModuleInitializers)
-{
-    moduleInitializer.Init(moduleServiceCollection);
-    loadedModuleAssemblies.Add(moduleInitializer.GetType().Assembly);
-}
-
-builder.Services.AddSingleton<IService, MainService>();
-builder.Services.Replace(ServiceDescriptor.Singleton<IControllerActivator, ModuleBasedControllerActivator>());
-
-var mvcBuilder = builder.Services.AddControllers();
-
-foreach (var assembly in loadedModuleAssemblies)
-{
-    mvcBuilder.AddApplicationPart(assembly);
-}
-
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-foreach (var (moduleInitializer, _) in GlobalConfiguration.ModuleInitializers)
+foreach (var moduleInitializer in GlobalConfiguration.Initializers)
 {
     moduleInitializer.MapEndpoints(app);
 }
@@ -58,8 +49,10 @@ app.MapControllers();
 
 app.Run();
 
-static void LoadInstalledModules(WebApplicationBuilder builder)
+static void LoadInstalledModules(WebApplicationBuilder builder, out List<Assembly> assemblies)
 {
+    assemblies = new List<Assembly>();
+
     var moduleRootFolder = new DirectoryInfo(builder.Environment.ContentRootPath);
     var moduleFolders = moduleRootFolder.GetDirectories().Where(f => f.FullName.EndsWith("bin"));
 
@@ -74,6 +67,7 @@ static void LoadInstalledModules(WebApplicationBuilder builder)
             try
             {
                 assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file.FullName);
+                assemblies.Add(assembly);
 
                 var moduleInitializerType = assembly
                     .GetTypes()
@@ -84,29 +78,13 @@ static void LoadInstalledModules(WebApplicationBuilder builder)
                 {
                     var moduleInitializer = (IModuleInitializer)Activator.CreateInstance(moduleInitializerType)!;
 
-                    GlobalConfiguration.ModuleInitializers.Add(moduleInitializer, builder.Services.CreateNewServiceCollection());
+                    GlobalConfiguration.Initializers.Add(moduleInitializer);
                 }
             }
-            catch (FileLoadException)
+            catch
             {
-                // Get loaded assembly
-                assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(file.Name)));
-
-                if (assembly == null)
-                {
-                    throw;
-                }
+                // do nothing
             }
         }
-    }
-
-    GlobalConfiguration.ServicesRoot = builder.Services;
-}
-
-internal class MainService : IService
-{
-    public string SayHello()
-    {
-        return "Main";
     }
 }
