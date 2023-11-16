@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Modular.Core;
 
-namespace Module.One
+namespace Module.Sample
 {
     public class ModuleInitializer : IModuleInitializer
     {

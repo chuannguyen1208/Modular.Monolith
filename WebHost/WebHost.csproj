@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Modular.Core\Modular.Core.csproj" />
-    <ProjectReference Include="..\modules\Module.One\Module.One.csproj" />
+    <ProjectReference Include="..\modules\Module.One\Module.Sample.csproj" />
   </ItemGroup>
 
 </Project>

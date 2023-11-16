@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Modular.Core;
-using Module.One;
+using Module.Sample;
 using System.Reflection;
 using System.Runtime.Loader;
 

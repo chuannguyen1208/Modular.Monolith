@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Module.One
+namespace Module.Sample
 {
     public class ModuleOneModule : Autofac.Module
     {

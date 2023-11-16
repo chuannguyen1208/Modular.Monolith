@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebHost", "WebHost\WebHost.csproj", "{DB622DBD-451B-4E76-BFF5-B4721BD66FE3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Module.One", "modules\Module.One\Module.One.csproj", "{A59D331B-28EB-40E6-B668-A8BE240DDB9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Module.Sample", "modules\Module.One\Module.Sample.csproj", "{A59D331B-28EB-40E6-B668-A8BE240DDB9B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{E5EDA694-0C4F-421B-86FB-F982DA08BFAC}"
 EndProject
