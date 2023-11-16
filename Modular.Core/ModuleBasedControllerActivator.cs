@@ -12,6 +12,8 @@ namespace Modular.Core
 {
     public class ModuleBasedControllerActivator : IControllerActivator
     {
+        private IServiceScope _serviceScope = null!;
+
         public object Create(ControllerContext context)
         {
             if (context == null)
@@ -33,13 +35,16 @@ namespace Modular.Core
 
             var serviceProvider = services.BuildServiceProvider();
 
+            _serviceScope = serviceProvider.CreateScope();
+
             Type serviceType = context.ActionDescriptor.ControllerTypeInfo.AsType();
 
-            return ActivatorUtilities.CreateInstance(serviceProvider, serviceType);
+            return ActivatorUtilities.CreateInstance(_serviceScope.ServiceProvider, serviceType);
         }
 
         public void Release(ControllerContext context, object controller)
         {
+            _serviceScope?.Dispose();
         }
     }
 }
