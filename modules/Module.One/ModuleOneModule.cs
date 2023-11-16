@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using BuildingBlock.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +11,6 @@ namespace Module.One
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder
-                .RegisterType<ModuleOneService>()
-                .As<IService>()
-                .SingleInstance();
         }
     }
 }

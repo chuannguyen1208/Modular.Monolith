@@ -1,6 +1,5 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using BuildingBlock.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -8,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Modular.Core;
 using Module.One;
-using Module.Two;
 using System.Reflection;
 using System.Runtime.Loader;
 
@@ -21,7 +19,6 @@ builder.Host
     .ConfigureContainer<ContainerBuilder>(builder =>
     {
         builder.RegisterModule<ModuleOneModule>();
-        builder.RegisterModule<ModuleTwoModule>();
     });
 
 builder.Services.AddControllers();
